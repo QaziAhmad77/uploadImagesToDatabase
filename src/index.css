@@ -1,0 +1,29 @@
+.custom-file-input {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .custom-file-input input[type="file"] {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  .file-name {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  /* Optional: Style the file input when a file is chosen */
+  .custom-file-input input[type="file"]:focus + .file-name {
+    outline: 2px solid #4CAF50;
+  }
+  

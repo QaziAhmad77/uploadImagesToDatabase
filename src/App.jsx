@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
   const [image, setImage] = useState('');
+  const [refresh, setRefresh] = useState(false);
+  const [allImages, setAllImages] = useState([]);
 
   function convertToBase64(e) {
     const file = e.target.files[0];
@@ -35,18 +37,36 @@ function App() {
       }),
     })
       .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((data) => {
+        console.log(data);
+        setRefresh(true);
+      });
   };
+  const getImages = () => {
+    fetch('http://localhost:5000/api/images/get-all-images', {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setAllImages(data.images);
+      });
+  };
+  useEffect(() => {
+    getImages();
+  }, [refresh]);
   return (
     <>
       <div
         style={{
           backgroundColor: 'royalblue',
           width: '100vw',
-          height: '100vh',
+          height: 'auto',
           display: 'flex',
+          flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
+          gap: '12px',
         }}
       >
         <div
@@ -57,6 +77,7 @@ function App() {
             borderRadius: '8px',
             padding: '12px',
             display: 'flex',
+            marginTop: '50px',
           }}
         >
           <div
@@ -111,6 +132,30 @@ function App() {
               alt=""
             />
           )}
+        </div>
+        <div
+          style={{
+            width: '700px',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '12px',
+          }}
+        >
+          {allImages.map((data) => {
+            return (
+              <>
+                <div style={{}}>
+                  <img
+                    style={{ objectFit: 'fill' }}
+                    width={220}
+                    height={200}
+                    src={data.image}
+                  />
+                </div>
+              </>
+            );
+          })}
         </div>
       </div>
     </>
